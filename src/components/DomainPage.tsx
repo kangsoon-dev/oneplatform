@@ -1,9 +1,10 @@
+import React from 'react';
 import { useState, useMemo } from 'react';
 import { Domain } from '../types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
-import { Database, DollarSign, Settings, Wrench, Globe, Users, Leaf, Briefcase, LucideIcon } from 'lucide-react';
+import { Database, DollarSign, Settings, Wrench, Globe, Users, Leaf, Briefcase, LucideIcon, BarChart3, AppWindow, Bot } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
   Database,
@@ -14,6 +15,51 @@ const iconMap: Record<string, LucideIcon> = {
   Users,
   Leaf,
   Briefcase
+};
+
+const typeIconMap: Record<string, LucideIcon> = {
+  dashboard: BarChart3,
+  app: AppWindow,
+  chatbot: Bot
+};
+
+const getTypeIconStyle = (type: string) => {
+  switch (type) {
+    case 'dashboard':
+      return 'bg-green-500 text-white';
+    case 'app':
+      return 'bg-blue-500 text-white';
+    case 'chatbot':
+      return 'bg-slate-900 text-white';
+    default:
+      return 'bg-slate-500 text-white';
+  }
+};
+
+const getStatusBadgeStyle = (status?: string) => {
+  switch (status) {
+    case 'live':
+      return 'bg-white text-slate-900 border-slate-200';
+    case 'beta':
+      return 'bg-white text-slate-900 border-slate-200';
+    case 'coming-soon':
+      return 'bg-white text-slate-900 border-slate-200';
+    default:
+      return 'bg-slate-100 text-slate-600 border-slate-200';
+  }
+};
+
+const getStatusDotColor = (status?: string) => {
+  switch (status) {
+    case 'live':
+      return 'bg-green-500';
+    case 'beta':
+      return 'bg-yellow-500';
+    case 'coming-soon':
+      return 'bg-blue-500';
+    default:
+      return 'bg-slate-400';
+  }
 };
 
 interface DomainPageProps {
@@ -93,40 +139,84 @@ export function DomainPage({ domain, onNavigateToItem }: DomainPageProps) {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredItems.map((item) => (
-            <Card
-              key={item.id}
-              className="cursor-pointer hover:shadow-md transition-all border-slate-200 bg-white"
-              onClick={() => onNavigateToItem(item.id)}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-base text-slate-900">{item.name}</CardTitle>
-                  <Badge
-                    variant={item.type === 'dashboard' ? 'default' : 'secondary'}
-                    className={item.type === 'dashboard' ? 'bg-[#1e3a5f]' : ''}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredItems.map((item) => {
+            const TypeIcon = typeIconMap[item.type] || BarChart3;
+            const statusText = item.status === 'coming-soon' ? 'Coming Soon' :
+              item.status === 'beta' ? 'Beta' :
+                item.status === 'live' ? 'Live' : '';
+
+            return (
+              <Card
+                key={item.id}
+                className="cursor-pointer hover:shadow-lg transition-all duration-200 border-slate-200 bg-white overflow-hidden group w-full max-w-sm min-w-[280px] mx-auto relative"
+                onClick={() => onNavigateToItem(item.id)}
+              >
+                {/* Status Badge - Top Right of Card */}
+                {statusText && (
+                  <div
+                    className="absolute z-50 pointer-events-none"
+                    style={{ top: '6px', right: '6px' }}
                   >
-                    {item.name.toLowerCase().includes('chatbot') ? 'Chatbot' : item.type === 'dashboard' ? 'Dashboard' : 'App'}
-                  </Badge>
-                </div>
-                {item.description && (
-                  <CardDescription className="text-xs text-slate-600 mt-1">{item.description}</CardDescription>
-                )}
-              </CardHeader>
-              {item.pages && item.pages.length > 0 && (
-                <CardContent className="pt-0">
-                  <div className="flex flex-wrap gap-1.5">
-                    {item.pages.map((page, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs font-normal border-slate-300 text-slate-600">
-                        {page}
-                      </Badge>
-                    ))}
+                    <Badge className={`${getStatusBadgeStyle(item.status)} text-sm font-medium px-2 py-1 flex items-center gap-2 shadow-lg pointer-events-auto`}>
+                      {statusText}
+                      <div className={`w-2 h-2 rounded-full ${getStatusDotColor(item.status)}`} />
+                    </Badge>
                   </div>
+                )}
+
+                {/* Image Section with 16:9 aspect ratio */}
+                <div className="aspect-video bg-slate-100 overflow-hidden">
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={`${item.name} preview`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                      onError={(e) => {
+                        // Fallback to placeholder if image fails to load
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                      <TypeIcon className="h-8 w-8 text-slate-400" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Content Section */}
+                <CardContent className="p-3">
+                  <div className="flex items-start gap-2">
+                    {/* Type Icon */}
+                    <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${getTypeIconStyle(item.type)}`}>
+                      <TypeIcon className="h-4 w-4" />
+                    </div>
+
+                    {/* Text Content */}
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-sm font-semibold text-slate-900 mb-1 line-clamp-1">
+                        {item.name}
+                      </CardTitle>
+                      {item.description && (
+                        <CardDescription className="text-xs text-slate-600 line-clamp-2">
+                          {item.description}
+                        </CardDescription>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Last Updated Timestamp - Right aligned */}
+                  {item.lastUpdated && (
+                    <div className="mt-2 text-right">
+                      <span className="text-xs text-slate-500">
+                        Last updated: {item.lastUpdated}
+                      </span>
+                    </div>
+                  )}
                 </CardContent>
-              )}
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { domains } from '../data/domains';
 import { Database, DollarSign, Settings, Wrench, Globe, Users, Leaf, Briefcase, LucideIcon, BarChart3 } from 'lucide-react';
@@ -65,7 +66,7 @@ export function WelcomePage({ onNavigate }: WelcomePageProps) {
               <div className="flex items-center justify-between py-2 border-b border-slate-100">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 bg-slate-50 rounded flex items-center justify-center">
-                    <BarChart3 className="h-5 w-5 text-slate-600" />
+                    <Wrench className="h-5 w-5 text-slate-600" />
                   </div>
                   <div>
                     <p className="text-sm text-slate-900">Viewed Speed and Fuel Consumption</p>

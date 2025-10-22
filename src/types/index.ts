@@ -13,6 +13,9 @@ export interface DomainItem {
   description?: string;
   pages?: string[];
   embedUrl?: string;
+  status?: 'live' | 'beta' | 'coming-soon';
+  lastUpdated?: string;
+  imageUrl?: string;
 }
 
 export interface BreadcrumbItem {

@@ -568,6 +568,13 @@
     overflow: hidden;
   }
 
+  .line-clamp-2 {
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
   .block {
     display: block;
   }
@@ -657,6 +664,10 @@
 
   .h-screen {
     height: 100vh;
+  }
+
+  .aspect-video {
+    aspect-ratio: 16 / 9;
   }
 
   .max-h-\(--radix-dropdown-menu-content-available-height\) {
@@ -1033,6 +1044,30 @@
 
   .bg-slate-50 {
     background-color: var(--color-slate-50);
+  }
+
+  .bg-slate-100 {
+    background-color: var(--color-slate-100);
+  }
+
+  .bg-slate-900 {
+    background-color: var(--color-slate-900);
+  }
+
+  .bg-green-500 {
+    background-color: #10b981;
+  }
+
+  .bg-yellow-500 {
+    background-color: #eab308;
+  }
+
+  .bg-blue-500 {
+    background-color: #3b82f6;
+  }
+
+  .bg-orange-500 {
+    background-color: #f97316;
   }
 
   .bg-white {

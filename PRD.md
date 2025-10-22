@@ -223,8 +223,7 @@ Operations Domain
 
 **Left Navigation:**
 - Persistent, always visible
-- Minimal width by default (icon only), expanded when icon is selected
-- Expandable/collapsible accordion for each domain
+- Minimal width by default (icon only)
 - Active state highlighting for current domain and app
 - Smooth transitions and animations
 - Icon + label for domains
@@ -256,10 +255,7 @@ Operations Domain
 - Power BI Apps and Dashboards access are managed from PowerBI service, so no need to worry about this
 
 **Example Roles:**
-- **Executive:** High-level dashboards, summary views, strategic insights
-- **Analyst:** Detailed dashboards, data catalog access, analytical tools
-- **Manager:** Team-specific dashboards, workflow approval tools
-- **Operator:** Operational dashboards, data entry forms
+- TBD
 
 **Technical Approach:**
 - All apps have a unified access control checking mechanism that verifies the user's group membership before rendering the app
