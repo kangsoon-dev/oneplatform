@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Database, DollarSign, Settings, Wrench, Globe, Users, Leaf, Briefcase, LucideIcon } from 'lucide-react';
 import { Domain } from '../types';
 import { cn } from './ui/utils';
@@ -18,10 +19,10 @@ interface SidebarProps {
   domains: Domain[];
   currentDomain?: string;
   currentItem?: string;
-  onNavigate: (domainId: string, itemId?: string) => void;
 }
 
-export function Sidebar({ domains, currentDomain, currentItem, onNavigate }: SidebarProps) {
+export function Sidebar({ domains, currentDomain, currentItem }: SidebarProps) {
+  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
 
@@ -29,7 +30,7 @@ export function Sidebar({ domains, currentDomain, currentItem, onNavigate }: Sid
     if (isExpanded) {
       if (expandedDomain === domainId) {
         // If clicking the same domain, navigate to it
-        onNavigate(domainId);
+        navigate(`/${domainId}`);
         setExpandedDomain(null);
       } else {
         // Expand the domain to show its items
@@ -37,7 +38,7 @@ export function Sidebar({ domains, currentDomain, currentItem, onNavigate }: Sid
       }
     } else {
       // If sidebar is collapsed, navigate directly
-      onNavigate(domainId);
+      navigate(`/${domainId}`);
     }
   };
 
@@ -91,7 +92,7 @@ export function Sidebar({ domains, currentDomain, currentItem, onNavigate }: Sid
                       key={item.id}
                       onClick={(e) => {
                         e.stopPropagation();
-                        onNavigate(domain.id, item.id);
+                        navigate(`/${domain.id}/${item.id}`);
                       }}
                       className={cn(
                         "w-full text-left px-4 py-2 pl-12 text-sm text-slate-600 transition-colors hover:bg-slate-100",

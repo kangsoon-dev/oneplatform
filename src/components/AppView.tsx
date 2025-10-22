@@ -18,14 +18,14 @@ export function AppView({ item }: AppViewProps) {
           <p className="text-sm text-slate-600 mt-1">{item.description}</p>
         )}
       </div>
-      
+
       <div className="flex-1 p-6">
         {item.pages && item.pages.length > 0 ? (
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="bg-white border border-slate-200">
               {item.pages.map((page) => (
-                <TabsTrigger 
-                  key={page} 
+                <TabsTrigger
+                  key={page}
                   value={page}
                   className="data-[state=active]:bg-slate-100 text-slate-600"
                 >
@@ -33,7 +33,7 @@ export function AppView({ item }: AppViewProps) {
                 </TabsTrigger>
               ))}
             </TabsList>
-            
+
             {item.pages.map((page) => (
               <TabsContent key={page} value={page} className="mt-4">
                 <Card className="border-slate-200">

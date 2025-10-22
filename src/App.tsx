@@ -1,82 +1,51 @@
-import { useState, useMemo } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';
-import { WelcomePage } from './components/WelcomePage';
-import { DomainPage } from './components/DomainPage';
-import { DashboardView } from './components/DashboardView';
-import { AppView } from './components/AppView';
+import { HomePage } from './components/routes/HomePage';
+import { DomainPageRoute } from './components/routes/DomainPageRoute';
+import { ItemPageRoute } from './components/routes/ItemPageRoute';
 import { domains } from './data/domains';
 
 export default function App() {
-  const [currentDomain, setCurrentDomain] = useState<string | null>(null);
-  const [currentItem, setCurrentItem] = useState<string | null>(null);
+  const location = useLocation();
 
-  // Get current domain and item objects
-  const domain = useMemo(
-    () => domains.find(d => d.id === currentDomain),
-    [currentDomain]
-  );
+  // Extract current domain and item from URL
+  const getCurrentState = () => {
+    const pathSegments = location.pathname.split('/').filter(Boolean);
 
-  const item = useMemo(
-    () => domain?.items.find(i => i.id === currentItem),
-    [domain, currentItem]
-  );
+    if (pathSegments.length === 0) {
+      return { domain: null, item: null };
+    }
 
-  // Navigation handlers
-  const handleNavigate = (domainId: string, itemId?: string) => {
-    setCurrentDomain(domainId);
-    setCurrentItem(itemId || null);
+    if (pathSegments.length === 1) {
+      const domain = domains.find(d => d.id === pathSegments[0]);
+      return { domain, item: null };
+    }
+
+    if (pathSegments.length === 2) {
+      const domain = domains.find(d => d.id === pathSegments[0]);
+      const item = domain?.items.find(i => i.id === pathSegments[1]);
+      return { domain, item };
+    }
+
+    return { domain: null, item: null };
   };
 
-  const handleNavigateToItem = (itemId: string) => {
-    setCurrentItem(itemId);
-  };
-
-  const handleNavigateHome = () => {
-    setCurrentDomain(null);
-    setCurrentItem(null);
-  };
+  const { domain, item } = getCurrentState();
 
   const handleSearch = (query: string) => {
     console.log('Search query:', query);
     // In production, this would trigger a global search across apps, dashboards, and data
   };
 
-  // Render main content based on current state
-  const renderContent = () => {
-    // Show specific item (dashboard or app)
-    if (item && domain) {
-      if (item.type === 'dashboard') {
-        return <DashboardView title={item.name} embedUrl={item.embedUrl || ''} />;
-      } else {
-        return <AppView item={item} />;
-      }
-    }
-
-    // Show domain page
-    if (domain) {
-      return (
-        <DomainPage
-          domain={domain}
-          onNavigateToItem={handleNavigateToItem}
-        />
-      );
-    }
-
-    // Show welcome page
-    return <WelcomePage onNavigate={handleNavigate} />;
-  };
-
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Top Navigation */}
       <TopNav
-        currentDomain={domain}
-        currentItem={item}
+        currentDomain={domain || undefined}
+        currentItem={item || undefined}
         allDomains={domains}
         onSearch={handleSearch}
-        onNavigateHome={handleNavigateHome}
-        onNavigate={handleNavigate}
       />
 
       {/* Main Layout: Sidebar + Content */}
@@ -84,14 +53,17 @@ export default function App() {
         {/* Sidebar */}
         <Sidebar
           domains={domains}
-          currentDomain={currentDomain || undefined}
-          currentItem={currentItem || undefined}
-          onNavigate={handleNavigate}
+          currentDomain={domain?.id}
+          currentItem={item?.id}
         />
 
         {/* Main Content Area */}
         <div className="flex-1 overflow-auto bg-slate-50">
-          {renderContent()}
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/:domainId" element={<DomainPageRoute />} />
+            <Route path="/:domainId/:itemId" element={<ItemPageRoute />} />
+          </Routes>
         </div>
       </div>
     </div>

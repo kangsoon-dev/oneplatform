@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Bell, User, Settings, LogOut } from 'lucide-react';
 import { Badge } from './ui/badge';
 import {
@@ -21,11 +22,10 @@ interface TopNavProps {
   currentItem?: DomainItem;
   allDomains: Domain[];
   onSearch: (query: string) => void;
-  onNavigateHome: () => void;
-  onNavigate: (domainId: string, itemId?: string) => void;
 }
 
-export function TopNav({ currentDomain, currentItem, allDomains, onSearch, onNavigateHome, onNavigate }: TopNavProps) {
+export function TopNav({ currentDomain, currentItem, allDomains, onSearch }: TopNavProps) {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [notifications] = useState([
     {
@@ -56,7 +56,7 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch, onNav
       {/* Left side - Logo and Breadcrumbs */}
       <div className="flex items-center gap-6">
         <button
-          onClick={onNavigateHome}
+          onClick={() => navigate('/')}
           className="flex items-center gap-4 hover:opacity-80 transition-opacity"
         >
           <img
@@ -69,13 +69,12 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch, onNav
           </div>
         </button>
 
-        {currentDomain && (
+        {currentDomain && currentItem && (
           <div className="ml-4">
             <BreadcrumbNav
               currentDomain={currentDomain}
               currentItem={currentItem}
               allDomains={allDomains}
-              onNavigate={onNavigate}
             />
           </div>
         )}
