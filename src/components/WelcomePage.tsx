@@ -23,7 +23,7 @@ export function WelcomePage({ onNavigate }: WelcomePageProps) {
       <div className="mb-6">
         <h1 className="text-3xl text-slate-900 mb-2">Welcome to ONE Platform</h1>
         <p className="text-base text-slate-600">
-          Your unified digital ecosystem for data, insights, and applications
+          Your unified digital ecosystem for data, insights, and applications in BW LPG.
         </p>
       </div>
 

@@ -3,8 +3,8 @@ import { Database, DollarSign, Settings, Wrench, Globe, Users, Leaf, Briefcase }
 
 export const domains: Domain[] = [
   {
-    id: 'mdm',
-    name: 'MDM',
+    id: 'general',
+    name: 'General',
     icon: 'Database',
     description: 'Master data, entity references, standard lists',
     items: [

@@ -10,7 +10,7 @@
 ## 1. Executive Summary
 
 BW LPG is developing ONE Platform, a unified digital ecosystem that consolidates access to Power BI dashboards, Unity Catalog data assets, AI applications, and custom internal tools under a single authenticated interface.
-The platform serves as the single entry point for users to access insights, applications, and governed data across eight business domains: Master Data Management (MDM), Finance, Operations, Technical, Market, HR, ESG, and Commercial.
+The platform serves as the single entry point for users to access insights, applications, and governed data across eight business domains: General, Finance, Operations, Technical, Market, HR, ESG, and Commercial.
 Key Capabilities:
 
 Unified navigation across all internal applications and dashboards
@@ -40,7 +40,7 @@ Role-based content views for different user types
 │  [Logo]  Domain > Page          [Search 🔍]  [🔔] [👤]     │ ← Top Nav
 ├──────────┬──────────────────────────────────────────────────┤
 │          │                                                   │
-│  🧭 MDM  │                                                   │
+│  🧭 General│                                                   │
 │  💰 Finance│           Main Content Area                    │
 │  ⚙️ Operations│      (Dashboard / App / Composite View)    │
 │  🔧 Technical│                                              │
@@ -72,7 +72,7 @@ The platform organizes all content under **8 core domains**:
 
 | Domain | Icon | Description | Example Assets |
 |--------|------|-------------|----------------|
-| **MDM** | 🧭 | Master data, entity references, standard lists | Vessel master, Voyage master |
+| **General** | 🧭 | Master data, entity references, standard lists | Vessel master, Voyage master |
 | **Finance** | 💰 | Financial reporting | Running cost, G&A, Flux Analysis |
 | **Operations** | ⚙️ | Daily operational insights and scheduling | Voyage Management, Chartering Scheduler |
 | **Technical** | 🔧 | Maintenance tracking, performance benchmarking | Speed and Fuel Consumption |

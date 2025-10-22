@@ -1,3 +1,4 @@
+import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';
@@ -54,7 +55,6 @@ export default function App() {
         <Sidebar
           domains={domains}
           currentDomain={domain?.id}
-          currentItem={item?.id}
         />
 
         {/* Main Content Area */}

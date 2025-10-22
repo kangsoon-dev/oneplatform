@@ -39,7 +39,7 @@ export function DomainPage({ domain, onNavigateToItem }: DomainPageProps) {
     const dashboards = domain.items.filter(item => item.type === 'dashboard').length;
     const chatbots = domain.items.filter(item => item.name.toLowerCase().includes('chatbot')).length;
     const apps = domain.items.filter(item => item.type === 'app' && !item.name.toLowerCase().includes('chatbot')).length;
-    
+
     return {
       all: domain.items.length,
       dashboards,
@@ -47,7 +47,7 @@ export function DomainPage({ domain, onNavigateToItem }: DomainPageProps) {
       chatbots
     };
   }, [domain.items]);
-  
+
   return (
     <div className="p-8 bg-slate-50">
       <div className="mb-6">
@@ -103,7 +103,7 @@ export function DomainPage({ domain, onNavigateToItem }: DomainPageProps) {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-base text-slate-900">{item.name}</CardTitle>
-                  <Badge 
+                  <Badge
                     variant={item.type === 'dashboard' ? 'default' : 'secondary'}
                     className={item.type === 'dashboard' ? 'bg-[#1e3a5f]' : ''}
                   >
