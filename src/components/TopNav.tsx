@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Search, Bell, User, Settings, LogOut } from 'lucide-react';
 import { Badge } from './ui/badge';
 import {
@@ -69,7 +69,7 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch, onNav
           </div>
         </button>
 
-        {currentDomain && currentItem && (
+        {currentDomain && (
           <div className="ml-4">
             <BreadcrumbNav
               currentDomain={currentDomain}
