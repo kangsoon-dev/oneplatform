@@ -115,10 +115,10 @@ export const domains: Domain[] = [
     ]
   },
   {
-    id: 'market',
-    name: 'Market',
-    icon: 'Globe',
-    description: 'Market analytics, freight rate monitoring',
+    id: 'commercial',
+    name: 'Commercial',
+    icon: 'Briefcase',
+    description: 'Commercial operations and contract management',
     items: [
       {
         id: 'market-insights',
@@ -129,24 +129,16 @@ export const domains: Domain[] = [
         status: 'live',
         lastUpdated: '17 Oct 2024 08:30',
         imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop&crop=center'
-      }
-    ]
-  },
-  {
-    id: 'hr',
-    name: 'HR',
-    icon: 'Users',
-    description: 'Human resources, workforce analytics',
-    items: [
+      },
       {
-        id: 'harvey-chatbot',
-        name: 'Harvey HR Chatbot',
-        type: 'chatbot',
-        description: 'AI-powered HR assistant',
-        pages: ['Chat', 'Knowledge Base'],
-        status: 'beta',
-        lastUpdated: '19 Oct 2024 15:45',
-        imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center'
+        id: 'revenue-analytics',
+        name: 'Revenue Analytics',
+        type: 'dashboard',
+        description: 'Commercial revenue tracking and analysis',
+        embedUrl: 'https://app.powerbi.com/view?r=example-revenue',
+        status: 'live',
+        lastUpdated: '16 Oct 2024 14:25',
+        imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop&crop=center'
       }
     ]
   },
@@ -169,30 +161,20 @@ export const domains: Domain[] = [
     ]
   },
   {
-    id: 'commercial',
-    name: 'Commercial',
-    icon: 'Briefcase',
-    description: 'Commercial operations and contract management',
+    id: 'hr',
+    name: 'HR',
+    icon: 'Users',
+    description: 'Human resources, workforce analytics',
     items: [
       {
-        id: 'contract-manager',
-        name: 'Contract Manager',
-        type: 'app',
-        description: 'Manage and track commercial contracts',
-        pages: ['Contracts', 'Renewals', 'Compliance'],
-        status: 'coming-soon',
-        lastUpdated: '20 Oct 2024 12:00',
-        imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop&crop=center'
-      },
-      {
-        id: 'revenue-analytics',
-        name: 'Revenue Analytics',
-        type: 'dashboard',
-        description: 'Commercial revenue tracking and analysis',
-        embedUrl: 'https://app.powerbi.com/view?r=example-revenue',
-        status: 'live',
-        lastUpdated: '16 Oct 2024 14:25',
-        imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop&crop=center'
+        id: 'harvey-chatbot',
+        name: 'Harvey HR Chatbot',
+        type: 'chatbot',
+        description: 'AI-powered HR assistant',
+        pages: ['Chat', 'Knowledge Base'],
+        status: 'beta',
+        lastUpdated: '19 Oct 2024 15:45',
+        imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center'
       }
     ]
   }

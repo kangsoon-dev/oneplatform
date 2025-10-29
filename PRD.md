@@ -10,7 +10,7 @@
 ## 1. Executive Summary
 
 BW LPG is developing ONE Platform, a unified digital ecosystem that consolidates access to Power BI dashboards, Unity Catalog data assets, AI applications, and custom internal tools under a single authenticated interface.
-The platform serves as the single entry point for users to access insights, applications, and governed data across eight business domains: General, Finance, Operations, Technical, Market, HR, ESG, and Commercial.
+The platform serves as the single entry point for users to access insights, applications, and governed data across eight business domains: General, Finance, Operations, Technical, Commercial, HR, ESG.
 Key Capabilities:
 
 Unified navigation across all internal applications and dashboards
@@ -44,7 +44,6 @@ Role-based content views for different user types
 │  💰 Finance│           Main Content Area                    │
 │  ⚙️ Operations│      (Dashboard / App / Composite View)    │
 │  🔧 Technical│                                              │
-│  🌍 Market│                                                 │
 │  👥 HR   │                                                   │
 │  🌱 ESG  │                                                   │
 │  💼 Commercial│                                             │
@@ -76,10 +75,9 @@ The platform organizes all content under **8 core domains**:
 | **Finance** | 💰 | Financial reporting | Running cost, G&A, Flux Analysis |
 | **Operations** | ⚙️ | Daily operational insights and scheduling | Voyage Management, Chartering Scheduler |
 | **Technical** | 🔧 | Maintenance tracking, performance benchmarking | Speed and Fuel Consumption |
-| **Market** | 🌍 | Market analytics, freight rate monitoring | Market insights |
 | **HR** | 👥 | Human resources, workforce analytics | Harvey HR Chatbot |
 | **ESG** | 🌱 | Environmental, Social, Governance metrics | Health and Safety (HSEQ) Dashboard |
-| **Commercial** | 💼 | Commercial operations and contract management | NA for now |
+| **Commercial** | 💼 | Market insights, market analysis | NA for now |
 
 **Navigation Pattern:**
 ```
@@ -202,9 +200,8 @@ Open WebUI is deployed as a Container App and integrated into ONE Platform throu
 **Example Structure:**
 ```
 Operations Domain
-  ├── Drydock Schedule App (Custom)
-  │   ├── View drydock schedules (Table)
-  │   ├── CRUD on drydock schedules (Form)
+  ├── Drydock Schedule Management (Custom)
+  │   ├── Drydock schedule editor (Table + Form)
   │   └── Drydock timeline (Power BI dashboard)
   └── Chartering Scheduler App (Custom)
       ├── ...

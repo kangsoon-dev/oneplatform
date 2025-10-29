@@ -88,11 +88,11 @@ export function WelcomePage({ onNavigate }: WelcomePageProps) {
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 bg-slate-50 rounded flex items-center justify-center">
-                    <Globe className="h-5 w-5 text-slate-600" />
+                    <Briefcase className="h-5 w-5 text-slate-600" />
                   </div>
                   <div>
                     <p className="text-sm text-slate-900">Reviewed Market Insights</p>
-                    <p className="text-xs text-slate-500">Market · 2 days ago</p>
+                    <p className="text-xs text-slate-500">Commercial · 2 days ago</p>
                   </div>
                 </div>
               </div>
