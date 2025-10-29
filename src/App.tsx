@@ -1,14 +1,22 @@
-import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React, { useMemo, useEffect } from 'react';
+import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { Refine, Authenticated } from '@refinedev/core';
+import { RefineKbar, RefineKbarProvider, useRegisterActions } from '@refinedev/kbar';
+import routerProvider from '@refinedev/react-router';
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';
 import { HomePage } from './components/routes/HomePage';
 import { DomainPageRoute } from './components/routes/DomainPageRoute';
 import { ItemPageRoute } from './components/routes/ItemPageRoute';
+import { LoginPage } from './components/routes/LoginPage';
+import { authProvider } from './providers/authProvider';
+import { apiDataProvider } from './providers/dataProvider';
 import { domains } from './data/domains';
 
-export default function App() {
+// Inner component to register actions after KBar is initialized
+function AppContent() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Extract current domain and item from URL
   const getCurrentState = () => {
@@ -34,38 +42,118 @@ export default function App() {
 
   const { domain, item } = getCurrentState();
 
-  const handleSearch = (query: string) => {
-    console.log('Search query:', query);
-    // In production, this would trigger a global search across apps, dashboards, and data
-  };
+  // Generate KBar actions from domains data
+  const kbarActions = useMemo(() => {
+    const actions: any[] = [];
+
+    // Add home action
+    actions.push({
+      id: 'home',
+      name: 'Home',
+      section: 'Navigation',
+      perform: () => navigate('/'),
+      keywords: 'home dashboard main',
+    });
+
+    // Add actions for each domain and their items
+    domains.forEach((domain) => {
+      const domainId = `domain-${domain.id}`;
+
+      // Add domain action
+      actions.push({
+        id: domainId,
+        name: domain.name,
+        section: 'Domains',
+        subtitle: domain.description,
+        perform: () => navigate(`/${domain.id}`),
+        keywords: `${domain.name.toLowerCase()} ${domain.description.toLowerCase()}`,
+      });
+
+      // Add actions for each item in the domain as children (hidden until searched)
+      domain.items.forEach((domainItem) => {
+        actions.push({
+          id: `item-${domain.id}-${domainItem.id}`,
+          name: domainItem.name,
+          parent: domainId, // Make items children of domain
+          subtitle: domainItem.description || `${domainItem.type} in ${domain.name}`,
+          perform: () => navigate(`/${domain.id}/${domainItem.id}`),
+          keywords: `${domainItem.name.toLowerCase()} ${(domainItem.description || '').toLowerCase()} ${domainItem.type} ${domain.name.toLowerCase()}`,
+        });
+      });
+    });
+
+    return actions;
+  }, [navigate]);
+
+  // Register actions with KBar
+  useRegisterActions(kbarActions, [kbarActions]);
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
-      {/* Top Navigation */}
-      <TopNav
-        currentDomain={domain || undefined}
-        currentItem={item || undefined}
-        allDomains={domains}
-        onSearch={handleSearch}
-      />
+    <Refine
+      authProvider={authProvider}
+      dataProvider={apiDataProvider}
+      routerProvider={routerProvider}
+      resources={[]}
+      options={{
+        syncWithLocation: true,
+        warnWhenUnsavedChanges: true,
+        disableTelemetry: true,
+      }}
+    >
+      <Routes>
+        {/* Public route - Login */}
+        <Route path="/login" element={<LoginPage />} />
 
-      {/* Main Layout: Sidebar + Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <Sidebar
-          domains={domains}
-          currentDomain={domain?.id}
+        {/* Protected routes */}
+        <Route
+          path="*"
+          element={
+            <Authenticated
+              key="authenticated-routes"
+              fallback={<Navigate to="/login" replace />}
+            >
+              <div className="h-screen flex flex-col overflow-hidden">
+                {/* Top Navigation */}
+                <TopNav
+                  currentDomain={domain || undefined}
+                  currentItem={item || undefined}
+                  allDomains={domains}
+                />
+
+                {/* Main Layout: Sidebar + Content */}
+                <div className="flex-1 flex overflow-hidden">
+                  {/* Sidebar */}
+                  <Sidebar
+                    domains={domains}
+                    currentDomain={domain?.id}
+                  />
+
+                  {/* Main Content Area */}
+                  <div className="flex-1 overflow-auto bg-slate-50">
+                    <Routes>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="/:domainId" element={<DomainPageRoute />} />
+                      <Route path="/:domainId/:itemId" element={<ItemPageRoute />} />
+                    </Routes>
+                  </div>
+                </div>
+              </div>
+            </Authenticated>
+          }
         />
+      </Routes>
 
-        {/* Main Content Area */}
-        <div className="flex-1 overflow-auto bg-slate-50">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/:domainId" element={<DomainPageRoute />} />
-            <Route path="/:domainId/:itemId" element={<ItemPageRoute />} />
-          </Routes>
-        </div>
-      </div>
-    </div>
+      {/* Command Palette (Cmd/Ctrl + K) */}
+      <RefineKbar />
+    </Refine>
+  );
+}
+
+// Main App component with providers
+export default function App() {
+  return (
+    <RefineKbarProvider>
+      <AppContent />
+    </RefineKbarProvider>
   );
 }

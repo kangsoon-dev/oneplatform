@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Bell, User, Settings, LogOut } from 'lucide-react';
+import { useGetIdentity, useLogout } from '@refinedev/core';
+import { useKBar } from '@refinedev/kbar';
+import { Search, Bell, User, Settings, LogOut, Command } from 'lucide-react';
 import { Badge } from './ui/badge';
 import {
   DropdownMenu,
@@ -21,12 +23,23 @@ interface TopNavProps {
   currentDomain?: Domain;
   currentItem?: DomainItem;
   allDomains: Domain[];
-  onSearch: (query: string) => void;
 }
 
-export function TopNav({ currentDomain, currentItem, allDomains, onSearch }: TopNavProps) {
+export function TopNav({ currentDomain, currentItem, allDomains }: TopNavProps) {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
+  const { query } = useKBar();
+  const { data: user } = useGetIdentity<{
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string;
+  }>();
+  const { mutate: logout } = useLogout();
+
+  // Detect if user is on Mac or Windows for keyboard shortcut display
+  const isMac = typeof navigator !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const shortcutKey = isMac ? '⌘' : 'Ctrl';
+
   const [notifications] = useState([
     {
       id: '1',
@@ -46,11 +59,6 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch }: Top
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch(searchQuery);
-  };
-
   return (
     <div className="h-16 bg-[#1e3a5f] flex items-center justify-between px-6">
       {/* Left side - Logo and Breadcrumbs */}
@@ -64,7 +72,7 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch }: Top
             alt="BW LPG"
             className="h-10"
           />
-          <div className="text-white text-xl">
+          <div className="text-white text-xl font-medium">
             ONE Platform
           </div>
         </button>
@@ -82,23 +90,23 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch }: Top
 
       {/* Right side - Search, Notifications, User Menu */}
       <div className="flex items-center gap-4">
-        {/* Search */}
-        <form onSubmit={handleSearchSubmit} className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Search apps, dashboards, data..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 py-1.5 w-64 bg-white/10 border border-white/20 rounded text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
-          />
-        </form>
+        {/* Command Palette Trigger */}
+        <button
+          onClick={() => query.toggle()}
+          className="flex items-center gap-3 px-4 py-2 w-72 bg-white/10 rounded-md hover:bg-white/15 transition-colors group h-10"
+        >
+          <Search className="h-5 w-5 text-white" />
+          <span className="flex-1 text-left text-base text-white group-hover:text-white">Search..</span>
+          <kbd className="hidden sm:inline-flex text-white items-center gap-1 px-2 py-1 text-sm font-mono bg-white/10 rounded text-white/50 mr-0.">
+            {shortcutKey} K
+          </kbd>
+        </button>
 
         {/* Notifications */}
         <Popover>
           <PopoverTrigger asChild>
-            <button className="relative p-2 hover:bg-white/10 rounded transition-colors">
-              <Bell className="h-4 w-4 text-white" />
+            <button className="relative p-2.5 hover:bg-white/10 rounded transition-colors">
+              <Bell className="h-5 w-5 text-white" />
               {unreadCount > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 text-[10px] bg-red-500">
                   {unreadCount}
@@ -134,16 +142,16 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch }: Top
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 p-1.5 hover:bg-white/10 rounded transition-colors">
-              <div className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center">
-                <User className="h-4 w-4 text-white" />
+            <button className="flex items-center gap-2 p-2 hover:bg-white/10 rounded transition-colors">
+              <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center">
+                <User className="h-5 w-5 text-white" />
               </div>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <div className="px-2 py-1.5">
-              <p className="text-sm">John Anderson</p>
-              <p className="text-xs text-slate-500">john.anderson@bwlpg.com</p>
+              <p className="text-sm font-medium">{user?.name || 'User'}</p>
+              <p className="text-xs text-slate-500">{user?.email || 'user@bwlpg.com'}</p>
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -155,7 +163,7 @@ export function TopNav({ currentDomain, currentItem, allDomains, onSearch }: Top
               Settings
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => logout()}>
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out
             </DropdownMenuItem>
