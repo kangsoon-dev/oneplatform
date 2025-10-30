@@ -1,15 +1,20 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { DomainItem } from '../types';
+import { DrydockScheduleManagement } from '../drydock-app/components/DrydockScheduleManagement';
 
 interface AppViewProps {
   item: DomainItem;
 }
 
-export function AppView({ item }: AppViewProps) {
+export const AppView = ({ item }: AppViewProps) => {
   const [activeTab, setActiveTab] = useState(item.pages?.[0] || '');
+
+  // Check if this is the drydock schedule management app
+  if (item.id === 'drydock-schedule' && item.type === 'app') {
+    return <DrydockScheduleManagement />;
+  }
 
   return (
     <div className="h-full flex flex-col bg-slate-50">
