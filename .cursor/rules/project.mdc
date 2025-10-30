@@ -7,6 +7,5 @@ alwaysApply: true
 - Run `pnpm dev` to start the development server
 
 ### Reference project files
-- Under `REFERENCE/` directory, a working template project is provided. Use assets and components from the template project as much as possible when building out the project by copying and pasting the original code from the `REFERENCE/` to `app/` where the app is built.
-- `PRD.md`: Project Requirements Document
-- `DEVELOPMENTS.md`: Tracks all development tasks and their status.
+- `PRD-oneplatform.md`: Requirements Document for the main project called ONE Platform
+- `PRD-drydock-schedule-management.md`: Requirements Document for Drydock Schedule Management App
