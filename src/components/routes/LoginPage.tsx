@@ -9,12 +9,12 @@ import { Alert, AlertDescription } from '../ui/alert';
 import { AlertCircle } from 'lucide-react';
 
 export function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { mutate: login, isLoading, error } = useLogin();
+  const [email, setEmail] = useState('demo@bwlpg.com');
+  const [password, setPassword] = useState('x');
+  const { mutate: login, isPending, error } = useLogin();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     login(
@@ -63,7 +63,7 @@ export function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                disabled={isLoading}
+                disabled={isPending}
                 autoComplete="email"
               />
             </div>
@@ -77,7 +77,7 @@ export function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                disabled={isLoading}
+                disabled={isPending}
                 autoComplete="current-password"
               />
             </div>
@@ -93,9 +93,9 @@ export function LoginPage() {
             <Button
               type="submit"
               className="w-full bg-[#1e3a5f] hover:bg-[#2c5282]"
-              disabled={isLoading}
+              disabled={isPending}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isPending ? 'Signing in...' : 'Sign In'}
             </Button>
 
             <p className="text-xs text-center text-slate-500">
