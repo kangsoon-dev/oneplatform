@@ -32,8 +32,11 @@ export const DrydockList = ({ onEdit, onCreate }: DrydockListProps) => {
               <TableHead className="w-[100px]">Drydock #</TableHead>
               <TableHead>Shipyard</TableHead>
               <TableHead>Person in Charge</TableHead>
-              <TableHead className="w-[120px]">Date Due</TableHead>
-              <TableHead className="w-[120px]">Date Agreed</TableHead>
+              <TableHead className="w-[120px]">Due Date</TableHead>
+              <TableHead className="w-[120px]">Agreed Date</TableHead>
+              <TableHead className="w-[120px]">Earliest Date</TableHead>
+              <TableHead className="w-[120px]">Tentative Date</TableHead>
+              <TableHead className="w-[120px]">Tech Mgr. Approved Days</TableHead>
               <TableHead className="w-[120px]">Offhire Days</TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
@@ -48,6 +51,9 @@ export const DrydockList = ({ onEdit, onCreate }: DrydockListProps) => {
                 <TableCell>{event.person_in_charge || '-'}</TableCell>
                 <TableCell>{formatDate(event.date_due)}</TableCell>
                 <TableCell>{formatDate(event.date_agreed)}</TableCell>
+                <TableCell>{formatDate(event.date_earliest)}</TableCell>
+                <TableCell>{formatDate(event.date_tentative)}</TableCell>
+                <TableCell>{event.tech_manager_approved_days ? `${event.tech_manager_approved_days} days` : '-'}</TableCell>
                 <TableCell>{event.offhire_days ? `${event.offhire_days} days` : '-'}</TableCell>
                 <TableCell>
                   <Button

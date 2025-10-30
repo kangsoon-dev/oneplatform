@@ -1,6 +1,7 @@
-import React from 'react';
-import { AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { Button } from './ui/button';
 
 interface DashboardViewProps {
   title: string;
@@ -8,10 +9,26 @@ interface DashboardViewProps {
 }
 
 export function DashboardView({ title, embedUrl }: DashboardViewProps) {
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const handleRefresh = () => {
+    setReloadKey((k) => k + 1);
+  };
   return (
     <div className="h-full flex flex-col bg-slate-50">
       <div className="p-6 border-b border-slate-200 bg-white">
-        <h2 className="text-xl text-slate-900">{title}</h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-xl text-slate-900">{title}</h2>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleRefresh}
+            aria-label="Refresh dashboard"
+            className="shrink-0"
+          >
+            <RefreshCw className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       <div className="flex-1 p-6">
@@ -25,13 +42,26 @@ export function DashboardView({ title, embedUrl }: DashboardViewProps) {
           </AlertDescription>
         </Alert>
 
-        {/* Placeholder for Power BI iframe */}
-        <div className="mt-6 bg-white rounded border border-slate-200 h-[600px] flex items-center justify-center">
-          <div className="text-center text-slate-400">
-            <div className="text-5xl mb-3">📊</div>
-            <p className="text-slate-600">Power BI Dashboard: {title}</p>
-            <p className="text-xs text-slate-500 mt-2">This would be an embedded iframe in production</p>
-          </div>
+        {/* Embedded iframe (if embedUrl exists) or placeholder */}
+        <div className="mt-6 bg-white rounded border border-slate-200 h-[600px] overflow-hidden">
+          {embedUrl ? (
+            <iframe
+              key={reloadKey}
+              src={embedUrl}
+              title={title}
+              className="w-full h-full border-0"
+              loading="lazy"
+              allowFullScreen
+            />
+          ) : (
+            <div className="h-full w-full flex items-center justify-center">
+              <div className="text-center text-slate-400">
+                <div className="text-5xl mb-3">📊</div>
+                <p className="text-slate-600">Power BI Dashboard: {title}</p>
+                <p className="text-xs text-slate-500 mt-2">This would be an embedded iframe in production</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
