@@ -138,13 +138,7 @@ export const DrydockScheduleManagement = () => {
           {/* Events Tab - always mounted but hidden when not active */}
           <div key={eventsReloadKey} className={activeTab === 'events' ? 'flex-1 min-h-0 p-6' : 'hidden'}>
             <Card className="border-slate-200 h-full flex flex-col">
-              <CardHeader className="bg-[#ddd6f3] border-b border-slate-200">
-                <CardTitle className="text-lg text-slate-900">Drydock Events</CardTitle>
-                <CardDescription className="text-sm text-slate-600">
-                  Manage and track all drydock events
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 overflow-auto bg-white">
+              <CardContent className="flex-1 overflow-auto bg-white pt-4">
                 <DrydockList onEdit={handleEdit} onCreate={handleCreate} />
               </CardContent>
             </Card>

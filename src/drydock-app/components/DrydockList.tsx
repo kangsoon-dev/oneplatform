@@ -27,8 +27,7 @@ export const DrydockList = ({ onEdit, onCreate }: DrydockListProps) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">ID</TableHead>
-              <TableHead>Vessel</TableHead>
+              <TableHead className="w-[200px] pl-4">Vessel</TableHead>
               <TableHead className="w-[100px]">Drydock #</TableHead>
               <TableHead>Shipyard</TableHead>
               <TableHead>Person in Charge</TableHead>
@@ -44,8 +43,7 @@ export const DrydockList = ({ onEdit, onCreate }: DrydockListProps) => {
           <TableBody>
             {mockDrydockEvents.map((event) => (
               <TableRow key={event.id}>
-                <TableCell className="font-medium">{event.id}</TableCell>
-                <TableCell>{event.vessel_name}</TableCell>
+                <TableCell className="font-medium pl-4">{event.vessel_name}</TableCell>
                 <TableCell>{event.drydock_num}</TableCell>
                 <TableCell>{event.shipyard_name}</TableCell>
                 <TableCell>{event.person_in_charge || '-'}</TableCell>
